@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
+import { IngressModule } from './ingress/ingress.module';
 
 @Module({
-  imports: [],
-  controllers: [],
-  providers: [],
+  imports: [IngressModule],
 })
 export class AppModule {}
