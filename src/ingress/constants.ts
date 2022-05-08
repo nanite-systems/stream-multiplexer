@@ -1,2 +1,2 @@
-export const WORLD_CHANGE_STREAM = Symbol('stream:world_state');
-export const EVENT_STREAM = Symbol('stream:event');
+export const WORLD_STATE_INGRESS = Symbol('ingress:world_state_stream');
+export const EVENT_INGRESS = Symbol('ingress:event_stream');

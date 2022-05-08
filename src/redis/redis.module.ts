@@ -1,14 +1,27 @@
-import { RedisModule as RedisModuleFactory } from '@nestjs-modules/ioredis';
-import * as assert from 'assert';
+import { Module } from '@nestjs/common';
+import { configProvider } from '../utils/config.helper';
+import { RedisConfig } from './redis.config';
+import { REDIS_INGRESS, REDIS_PUBLISH } from './constants';
+import { RedisFactory } from './factories/redis.factory';
 
-export const RedisModule = RedisModuleFactory.forRootAsync({
-  useFactory: () => {
-    assert(process.env.REDIS_URL, 'REDIS_URL is not defined');
+@Module({
+  providers: [
+    RedisFactory,
+    configProvider(RedisConfig),
 
-    return {
-      config: {
-        url: process.env.REDIS_URL,
-      },
-    };
-  },
-});
+    {
+      provide: REDIS_INGRESS,
+      useFactory: (factory: RedisFactory, config: RedisConfig) =>
+        factory.create(config.ingressRedisUrl, 'RedisIngress'),
+      inject: [RedisFactory, RedisConfig],
+    },
+    {
+      provide: REDIS_PUBLISH,
+      useFactory: (factory: RedisFactory, config: RedisConfig) =>
+        factory.create(config.publishRedisUrl, 'RedisPublish'),
+      inject: [RedisFactory, RedisConfig],
+    },
+  ],
+  exports: [REDIS_INGRESS, REDIS_PUBLISH],
+})
+export class RedisModule {}

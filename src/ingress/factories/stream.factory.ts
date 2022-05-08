@@ -1,6 +1,7 @@
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { Subject } from 'rxjs';
-import { InjectRedis, Redis } from '@nestjs-modules/ioredis';
+import { REDIS_INGRESS } from '../../redis/constants';
+import Redis from 'ioredis';
 
 @Injectable()
 export class StreamFactory implements OnModuleInit {
@@ -8,7 +9,7 @@ export class StreamFactory implements OnModuleInit {
 
   private readonly streams = new Map<string, Subject<any>>();
 
-  constructor(@InjectRedis() private readonly redis: Redis) {}
+  constructor(@Inject(REDIS_INGRESS) private readonly redis: Redis) {}
 
   onModuleInit(): void {
     this.redis.on('message', (channel, message) => {

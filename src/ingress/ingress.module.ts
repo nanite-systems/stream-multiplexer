@@ -1,17 +1,29 @@
 import { Module } from '@nestjs/common';
 import { RedisModule } from '../redis/redis.module';
-import { registerStream } from './utils/register.stream';
-import { EVENT_STREAM, WORLD_CHANGE_STREAM } from './constants';
+import { EVENT_INGRESS, WORLD_STATE_INGRESS } from './constants';
 import { StreamFactory } from './factories/stream.factory';
+import { configProvider } from '../utils/config.helper';
+import { IngressConfig } from './ingress.config';
 
 @Module({
   imports: [RedisModule],
   providers: [
     StreamFactory,
+    configProvider(IngressConfig),
 
-    registerStream(EVENT_STREAM, 'events'),
-    registerStream(WORLD_CHANGE_STREAM, 'world-changes'),
+    {
+      provide: EVENT_INGRESS,
+      useFactory: (factory: StreamFactory, config: IngressConfig) =>
+        factory.create(config.eventChannel),
+      inject: [StreamFactory, IngressConfig],
+    },
+    {
+      provide: WORLD_STATE_INGRESS,
+      useFactory: (factory: StreamFactory, config: IngressConfig) =>
+        factory.create(config.worldStateChannel),
+      inject: [StreamFactory, IngressConfig],
+    },
   ],
-  exports: [EVENT_STREAM, WORLD_CHANGE_STREAM],
+  exports: [EVENT_INGRESS, WORLD_STATE_INGRESS],
 })
 export class IngressModule {}
