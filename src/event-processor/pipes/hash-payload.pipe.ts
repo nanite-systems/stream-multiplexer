@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EventMessage } from '../../ingress/concerns/stream-messages.types';
-import { PS2Event } from '@census-reworked/stream-types';
+import { Stream } from 'ps2census';
 
 export interface HashedEventMessage extends EventMessage {
   hash: string;
@@ -15,7 +15,7 @@ export class HashPayloadPipe {
     };
   }
 
-  private createHash(payload: PS2Event): string {
+  private createHash(payload: Stream.PS2Event): string {
     let hash = '';
 
     for (const key in payload) hash += `:${payload[key]}`;

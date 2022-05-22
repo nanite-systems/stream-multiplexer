@@ -1,11 +1,12 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
+import { ProcessEnv } from '@census-reworked/nestjs-utils';
 
 export class PublisherConfig {
-  @IsString()
+  @ProcessEnv('PUBLISH_EVENT_CHANNEL')
   @IsNotEmpty()
-  eventStream = process.env.PUBLISH_EVENT_CHANNEL;
+  eventStream = 'ps2-events';
 
-  @IsString()
+  @ProcessEnv('PUBLISH_WORLD_STATE_CHANNEL')
   @IsNotEmpty()
-  worldStateStream = process.env.PUBLISH_WORLD_STATE_CHANNEL;
+  worldStateStream = 'ps2-worlds';
 }

@@ -1,35 +1,24 @@
-import { Inject, Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import {
-  EVENTS_PROCESSED,
-  WORLD_STATE_PROCESSED,
-} from '../../processor/constants';
-import { Observable } from 'rxjs';
+import { Injectable } from '@nestjs/common';
 import { PublisherConfig } from '../publisher.config';
-import { REDIS_PUBLISH } from '../../redis/constants';
-import Redis from 'ioredis';
+import IORedis from 'ioredis';
+import { Stream } from 'ps2census';
+import { WorldState } from '../../world-tracker/concerns/world-state';
 
 @Injectable()
-export class PublisherService implements OnApplicationBootstrap {
+export class PublisherService {
   constructor(
-    @Inject(REDIS_PUBLISH)
-    private readonly redis: Redis,
+    private readonly redis: IORedis,
     private readonly config: PublisherConfig,
-    @Inject(EVENTS_PROCESSED)
-    private readonly eventStream: Observable<any>,
-    @Inject(WORLD_STATE_PROCESSED)
-    private readonly worldStateStream: Observable<any>,
   ) {}
 
-  onApplicationBootstrap(): void {
-    this.eventStream.subscribe((event) => {
-      this.redis.publish(this.config.eventStream, JSON.stringify(event));
-    });
+  async publishEvent(event: Stream.PS2Event): Promise<void> {
+    await this.redis.publish(this.config.eventStream, JSON.stringify(event));
+  }
 
-    this.worldStateStream.subscribe((worldState) => {
-      this.redis.publish(
-        this.config.worldStateStream,
-        JSON.stringify(worldState),
-      );
-    });
+  async publishWorldState(worldState: WorldState): Promise<void> {
+    await this.redis.publish(
+      this.config.worldStateStream,
+      JSON.stringify(worldState),
+    );
   }
 }

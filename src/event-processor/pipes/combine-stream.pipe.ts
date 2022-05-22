@@ -22,7 +22,7 @@ export class CombineStreamPipe {
   private getCounters(key: string): Counters {
     let counters = this.map.get(key);
 
-    if (counters) {
+    if (!counters) {
       counters = new Counters();
       this.map.set(key, counters);
     }

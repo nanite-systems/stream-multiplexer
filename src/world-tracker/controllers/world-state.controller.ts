@@ -1,12 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
-import { WorldTracker } from '../../world-tracker/trackers/world.tracker';
+import { WorldTracker } from '../trackers/world.tracker';
+import { WorldState } from '../concerns/world-state';
 
-@Controller('/worlds')
+@Controller('/world-states')
 export class WorldStateController {
   constructor(private readonly worldTracker: WorldTracker) {}
 
   @Get()
-  list() {
+  worldStates(): WorldState[] {
     return this.worldTracker.toArray();
   }
 }

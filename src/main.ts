@@ -5,6 +5,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { AppConfig } from './app.config';
 
 async function bootstrap() {
   dotenv.config();
@@ -13,10 +14,11 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
+  const config = await app.resolve(AppConfig);
 
   app.enableShutdownHooks();
 
-  await app.listen(Number.parseInt(process.env.PORT, 10) || 3000, '0.0.0.0');
+  await app.listen(config.port, '0.0.0.0');
 }
 
 void bootstrap();

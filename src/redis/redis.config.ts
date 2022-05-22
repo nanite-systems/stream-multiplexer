@@ -1,11 +1,8 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsUrl } from 'class-validator';
+import { ProcessEnv } from '@census-reworked/nestjs-utils';
 
 export class RedisConfig {
-  @IsString()
-  @IsNotEmpty()
-  ingressRedisUrl = process.env.INGRESS_REDIS_URL;
-
-  @IsString()
-  @IsNotEmpty()
-  publishRedisUrl = process.env.PUBLISH_REDIS_URL;
+  @ProcessEnv('REDIS_URL')
+  @IsUrl({ protocols: ['redis'] })
+  url = 'redis://localhost:27017';
 }
