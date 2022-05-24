@@ -1,8 +1,8 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { WorldTracker } from '../trackers/world.tracker';
 import { CensusClient } from 'ps2census';
-import { CENSUS_CLIENTS } from '../../census/constants';
+import { WorldTracker } from '../trackers/world.tracker';
 import { PublisherService } from '../../publisher/services/publisher.service';
+import { CENSUS_CLIENTS } from '../../census/constants';
 
 @Injectable()
 export class WorldStateService implements OnModuleInit {

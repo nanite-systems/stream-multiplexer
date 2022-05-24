@@ -1,19 +1,20 @@
 import { Module } from '@nestjs/common';
-import { IngressModule } from '../ingress/ingress.module';
-import { EventService } from './services/event.service';
+import { EventProcessorService } from './services/event-processor.service';
 import { CombineStreamPipe } from './pipes/combine-stream.pipe';
 import { DuplicateFilterPipe } from './pipes/duplicate-filter.pipe';
 import { HashPayloadPipe } from './pipes/hash-payload.pipe';
+import { RabbitMqModule } from '../rabbit-mq/rabbit-mq.module';
 import { PublisherModule } from '../publisher/publisher.module';
 
 @Module({
-  imports: [IngressModule, PublisherModule],
+  imports: [RabbitMqModule, PublisherModule],
   providers: [
     CombineStreamPipe,
     DuplicateFilterPipe,
     HashPayloadPipe,
 
-    EventService,
+    EventProcessorService,
   ],
+  exports: [EventProcessorService],
 })
 export class EventProcessorModule {}

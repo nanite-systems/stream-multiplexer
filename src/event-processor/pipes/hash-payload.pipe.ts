@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { EventMessage } from '../../ingress/concerns/stream-messages.types';
+import { EventMessage } from '../concerns/stream-messages.types';
 import { Stream } from 'ps2census';
 
 export interface HashedEventMessage extends EventMessage {
