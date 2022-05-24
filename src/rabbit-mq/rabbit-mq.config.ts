@@ -6,11 +6,11 @@ export class RabbitMqConfig {
   @IsUrl({ protocols: ['amqp'] })
   url = 'amqp://localhost';
 
-  @ProcessEnv('RMQ_INGRESS_QUEUE')
+  @ProcessEnv('RMQ_INGRESS_EXCHANGE')
   @IsNotEmpty()
   ingressExchange: string;
 
-  @ProcessEnv('RMQ_PUBLISH_QUEUE')
+  @ProcessEnv('RMQ_PUBLISH_EXCHANGE')
   @IsNotEmpty()
   publishExchange: string;
 }
