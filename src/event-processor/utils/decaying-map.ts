@@ -30,7 +30,7 @@ export class DecayingMap<K, V> {
 
     if (expireAt > Date.now()) return value;
 
-    this.map.delete(key);
+    this.delete(key);
   }
 
   delete(key: K): void {
@@ -52,7 +52,7 @@ export class DecayingMap<K, V> {
   private prune(): void {
     const time = Date.now();
     for (const [key, { expireAt }] of this.map) {
-      if (expireAt <= time) this.map.delete(key);
+      if (expireAt <= time) this.delete(key);
     }
   }
 }
