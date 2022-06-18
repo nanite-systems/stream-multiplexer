@@ -55,28 +55,20 @@ jobs:
 #          cache-from: type=registry,ref=${{ github.repository }}:latest
 #          cache-to: type=inline
 
-      - name: Build and push latest docker image to Dockerhub
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ env.DOCKERHUB_PREFIX }}/${{ env.REPO_NAME }}:latest
-          labels: ${{ steps.meta.outputs.labels }}
-#          cache-from: type=registry,ref=${{ github.repository }}:latest
-#          cache-to: type=inline
-
       - name: Push versioned image to GHCR
         uses: docker/build-push-action@v3
         with:
           src: ${{ steps.meta.outputs.tags }}
-          dst: ghcr.io/${{ env.REPO_NAME }}/${{ steps.meta.outputs.tags }}
+          dst: |
+            ghcr.io/${{ env.REPO_NAME }}/${{ steps.meta.outputs.tags }}
 
-      - name: Push latest image to GHCR
+      - name: Push latest image to Dockerhub and GHCR
         uses: docker/build-push-action@v3
         with:
-          src: ${{ steps.meta.outputs.tags }}:latest
-          dst: ghcr.io/${{ env.REPO_NAME }}/${{ steps.meta.outputs.tags }}:latest
+          src: ${{ steps.meta.outputs.tags }}
+          dst: | 
+            ${{ steps.meta.outputs.tags }}:latest
+            ghcr.io/${{ env.REPO_NAME }}/${{ steps.meta.outputs.tags }}:latest
 
       - name: Image Digest
         run: echo ${{ steps.build.outputs.digest }}
