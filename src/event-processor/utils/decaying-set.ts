@@ -31,7 +31,7 @@ export class DecayingSet<T> {
   private prune(): void {
     const time = Date.now();
     for (const [value, expireAt] of this.cache) {
-      if (expireAt <= time) this.cache.delete(value);
+      if (expireAt <= time) this.delete(value);
     }
   }
 }
