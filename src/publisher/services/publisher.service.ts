@@ -14,13 +14,13 @@ export class PublisherService {
     const { world_id, event_name } = event;
     await this.publishExchange.publish(
       event,
-      `event.${event_name}.${world_id}`,
+      `event.${world_id}.${event_name}`,
     );
   }
 
   async publishWorldState(worldState: WorldState): Promise<void> {
     const { worldId } = worldState;
 
-    await this.publishExchange.publish(worldState, `worldstate.${worldId}`);
+    await this.publishExchange.publish(worldState, `world-state.${worldId}`);
   }
 }
