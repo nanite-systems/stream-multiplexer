@@ -4,7 +4,7 @@ import { IsNotEmpty, IsUrl } from 'class-validator';
 export class RabbitMqConfig {
   @ProcessEnv('RABBITMQ_URL')
   @IsUrl({ protocols: ['amqp'], require_tld: false })
-  url = 'amqp://localhost';
+  url: string;
 
   @ProcessEnv('RABBITMQ_INGRESS_EXCHANGE')
   @IsNotEmpty()
