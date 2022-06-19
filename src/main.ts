@@ -1,14 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import dotenv from 'dotenv';
 import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppConfig } from './app.config';
+import { ConfigModule } from '@census-reworked/nestjs-utils';
 
 async function bootstrap() {
-  dotenv.config();
+  ConfigModule.forRoot();
 
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
