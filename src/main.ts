@@ -13,9 +13,11 @@ async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
+    { bufferLogs: true },
   );
   const config = await app.resolve(AppConfig);
 
+  app.useLogger(config.logLevels);
   app.enableShutdownHooks();
 
   await app.listen(config.port, '0.0.0.0');
