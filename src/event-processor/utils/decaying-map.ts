@@ -25,8 +25,12 @@ export class DecayingMap<K, V> {
     return Boolean(this.get(key));
   }
 
-  get(key: K): V {
-    const { value, expireAt } = this.map.get(key);
+  get(key: K): V | undefined {
+    const item = this.map.get(key);
+
+    if (!item) return undefined;
+
+    const { value, expireAt } = item;
 
     if (expireAt > Date.now()) return value;
 
