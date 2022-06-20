@@ -7,6 +7,6 @@ export class Exchange {
   ) {}
 
   async publish(message: any, routingKey = ''): Promise<void> {
-    await this.channel.publish(this.name, routingKey, JSON.stringify(message));
+    await this.channel.publish(this.name, routingKey, message);
   }
 }
