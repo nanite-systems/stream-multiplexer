@@ -34,6 +34,7 @@ export class EventQueueFactory {
             const event = JSON.parse(message.content.toString());
 
             subject.next(event);
+            channel.ack(message);
           } catch (err) {
             if (err instanceof SyntaxError)
               this.logger.warn(
