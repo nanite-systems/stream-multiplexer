@@ -20,13 +20,13 @@ import { PublishExchangeFactory } from './factories/publish-exchange.factory';
     {
       provide: EVENT_QUEUE,
       useFactory: (factory: EventQueueFactory, config: RabbitMqConfig) =>
-        factory.create(config.ingressExchange),
+        factory.create(config.collectorExchange),
       inject: [EventQueueFactory, RabbitMqConfig],
     },
     {
       provide: PUBLISH_EXCHANGE,
       useFactory: (factory: PublishExchangeFactory, config: RabbitMqConfig) =>
-        factory.create(config.publishExchange),
+        factory.create(config.streamExchange),
       inject: [PublishExchangeFactory, RabbitMqConfig],
     },
   ],
