@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import {
   FastifyAdapter,
@@ -6,7 +6,11 @@ import {
 } from '@nestjs/platform-fastify';
 import { AppConfig } from './app.config';
 import { ConfigModule } from '@census-reworked/nestjs-utils';
-import { Logger } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Logger,
+  ValidationPipe,
+} from '@nestjs/common';
 
 async function bootstrap() {
   ConfigModule.forRoot();
@@ -21,7 +25,15 @@ async function bootstrap() {
     },
   );
 
-  app.enableShutdownHooks();
+  app
+    .enableShutdownHooks()
+    .useGlobalPipes(
+      new ValidationPipe({
+        transform: true,
+        whitelist: true,
+      }),
+    )
+    .useGlobalInterceptors(new ClassSerializerInterceptor(new Reflector()));
 
   process.on('uncaughtException', (err) => {
     const logger = new Logger('UncaughtException');
