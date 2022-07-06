@@ -3,7 +3,7 @@
   <img src="https://nanite-systems.net/images/ns.colored.svg" width="200" alt="Nest Logo" />
 </a>
 
-![version](https://img.shields.io/github/package-json/v/nanite-systems/stream-multiplexer)
+[![version](https://img.shields.io/github/package-json/v/nanite-systems/stream-multiplexer?color=blue)](https://github.com/nanite-systems/stream-multiplexer)
 [![issues](https://img.shields.io/github/issues/nanite-systems/stream-multiplexer)](https://github.com/nanite-systems/stream-multiplexer/issues)
 [![dependecies](https://img.shields.io/librariesio/github/nanite-systems/stream-multiplexer)](https://libraries.io/github/nanite-systems/stream-multiplexer)
 [![license](https://img.shields.io/github/license/nanite-systems/stream-multiplexer)](https://github.com/nanite-systems/stream-multiplexer/blob/main/LICENSE)
