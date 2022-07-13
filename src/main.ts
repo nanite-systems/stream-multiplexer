@@ -35,13 +35,17 @@ async function bootstrap() {
     )
     .useGlobalInterceptors(new ClassSerializerInterceptor(new Reflector()));
 
-  process.on('uncaughtException', (err) => {
-    const logger = new Logger('UncaughtException');
+  process
+    .on('unhandledRejection', (err) => {
+      throw err;
+    })
+    .on('uncaughtException', (err) => {
+      const logger = new Logger('UncaughtException');
 
-    logger.error(err, err.stack);
-    app.close();
-    process.exit(1);
-  });
+      logger.error(err, err.stack);
+      app.close();
+      process.exit(1);
+    });
 
   await app.listen(config.port, '0.0.0.0');
 }
